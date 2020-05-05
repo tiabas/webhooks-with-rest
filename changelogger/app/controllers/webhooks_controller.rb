@@ -2,12 +2,12 @@ class WebhooksController < ApplicationController
   WEBHOOK_HEADERS = ["HTTP_USER_AGENT", "CONTENT_TYPE", "HTTP_X_GITHUB_EVENT", "HTTP_X_GITHUB_DELIVERY", "HTTP_X_HUB_SIGNATURE"]
 
 #   before_action :verify_signature!
-#   before_action :verify_event_type!
+  before_action :verify_event_type!
 
   def create
-#     return unless closed?
-#     return unless merged_into_master?
-#     return unless changelog_enabled?
+    return unless closed?
+    return unless merged_into_master?
+    return unless changelog_enabled?
 
 #     create_changelog_entry
 
@@ -23,29 +23,29 @@ class WebhooksController < ApplicationController
     params["webhook"]
   end
 
-#   def verify_event_type!
-#     type = request.headers["HTTP_X_GITHUB_EVENT"]
-#     return if type == "pull_request"
-#     render(status: 422, json: "unallowed event type: #{type}")
-#   end
+  def verify_event_type!
+    type = request.headers["HTTP_X_GITHUB_EVENT"]
+    return if type == "pull_request"
+    render(status: 422, json: "unallowed event type: #{type}")
+  end
 
-#   def closed?
-#     binding.pry # breakpoint that should be removed
-#     payload["action"] == "closed"
-#   end
+  def closed?
+    # binding.pry # breakpoint that should be removed
+    payload["action"] == "closed"
+  end
 
-#   def merged_into_master?
-#     merged = payload["pull_request"]["merged"] == true
-#     in_to_master = payload["pull_request"]["base"]["ref"] == "master"
+  def merged_into_master?
+    merged = payload["pull_request"]["merged"] == true
+    in_to_master = payload["pull_request"]["base"]["ref"] == "master"
 
-#     merged && in_to_master
-#   end
+    merged && in_to_master
+  end
 
-#   def changelog_enabled?
-#     payload["pull_request"]["labels"].any? do |label|
-#       label["name"] == "documentation"
-#     end
-#   end
+  def changelog_enabled?
+    payload["pull_request"]["labels"].any? do |label|
+      label["name"] == "documentation"
+    end
+  end
 
 #   def octokit
 #     Octokit::Client.new(access_token: ENV["GITHUB_PERSONAL_ACCESS_TOKEN"])
