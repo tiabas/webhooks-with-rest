@@ -47,9 +47,9 @@ class WebhooksController < ApplicationController
     end
   end
 
-#   def octokit
-#     Octokit::Client.new(access_token: ENV["GITHUB_PERSONAL_ACCESS_TOKEN"])
-#   end
+  def octokit
+    Octokit::Client.new(access_token: ENV["GITHUB_PERSONAL_ACCESS_TOKEN"])
+  end
 
 #   def create_changelog_entry
 #     content, sha = get_file
